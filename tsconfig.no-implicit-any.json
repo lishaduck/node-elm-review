@@ -10,10 +10,8 @@
     "lib/debug.js",
     "lib/elm-communication.js",
     "lib/elm-files.js",
-    "lib/extra-files.js",
-    "lib/sync-get.js",
-    "lib/sync-get-worker.js",
     "lib/error-message.js",
+    "lib/extra-files.js",
     "lib/flags.js",
     "lib/fs-wrapper.js",
     "lib/hash.js",
@@ -32,6 +30,8 @@
     "lib/state.js",
     "lib/styled-message.js",
     "lib/suppressed-errors.js",
+    "lib/sync-get.js",
+    "lib/sync-get-worker.js",
     "jest.config.js"
   ]
 }
