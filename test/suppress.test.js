@@ -6,7 +6,7 @@ const snapshotter = require('./snapshotter');
 /**
  * @template {string} N
  * @param {N} name
- * @returns {`test/snapshots/suppress/${N}.txt`}
+ * @returns {`snapshots/suppress/${N}.txt`}
  */
 function testName(name) {
   return snapshotter.snapshotPath('suppress', name);
@@ -22,7 +22,7 @@ test('Running with --unsuppress should report suppressed errors', async () => {
   const output = await TestCli.runAndExpectError('--unsuppress', {
     project: 'project-with-suppressed-errors'
   });
-  expect(output).toMatchFile(testName('suppressed-errors-unsuppress'));
+  expect(output).toMatchFileSnapshot(testName('suppressed-errors-unsuppress'));
 });
 
 test('Running with --unsuppress-rules should report suppressed errors for that rule', async () => {
@@ -30,7 +30,9 @@ test('Running with --unsuppress-rules should report suppressed errors for that r
     '--unsuppress-rules NoUnused.Dependencies',
     {project: 'project-with-suppressed-errors'}
   );
-  expect(output).toMatchFile(testName('suppressed-errors-unsuppress-rules'));
+  expect(output).toMatchFileSnapshot(
+    testName('suppressed-errors-unsuppress-rules')
+  );
 });
 
 test('Running with "suppress --check-after-tests" when there are no uncommitted changes should not exit with failure', async () => {
@@ -54,7 +56,7 @@ test('Running with "suppress --check-after-tests" when there are uncommitted cha
   );
   // Remove uncommitted suppression files
   childProcess.execSync(`git checkout HEAD ${folder}`);
-  expect(output).toMatchFile(
+  expect(output).toMatchFileSnapshot(
     testName('suppressed-errors-check-with-uncommitted-changes')
   );
 });
@@ -72,5 +74,5 @@ test('Running with unsupported version of suppression files should exit with fai
   childProcess.execSync(`chmod -w ${filePath}`);
 
   const output = await TestCli.runAndExpectError('', {project});
-  expect(output).toMatchFile(testName('write-failure'));
+  expect(output).toMatchFileSnapshot(testName('write-failure'));
 });

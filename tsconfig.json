@@ -24,7 +24,9 @@
     "noUnusedLocals": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
-    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
+
+    "types": ["vitest/globals"]
   },
   "include": [
     "lib/**/*",
