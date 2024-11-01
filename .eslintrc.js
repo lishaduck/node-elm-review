@@ -35,6 +35,10 @@ module.exports = {
   env: {
     node: true
   },
+  globals: {
+    test: 'readonly',
+    describe: 'readonly'
+  },
   ignorePatterns: [
     '**/node_modules/',
     '**/elm-stuff/',
@@ -139,9 +143,5 @@ module.exports = {
         '@typescript-eslint/prefer-nullish-coalescing': 'off' // It's not happy with how TS is set up on this config file.
       }
     }
-  ],
-  globals: {
-    test: 'readonly',
-    expect: 'readonly'
-  }
+  ]
 };

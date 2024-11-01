@@ -1,12 +1,12 @@
 const packageJson = require('../package.json');
 const TestCli = require('./jest-helpers/cli');
 
-test('Running with --version', async () => {
+test.concurrent('Running with --version', async ({expect}) => {
   const output = await TestCli.runWithoutTestMode('--version');
   expect(output.trimEnd()).toEqual(packageJson.version);
 });
 
-test('Running with the shorthand -v', async () => {
+test.concurrent('Running with the shorthand -v', async ({expect}) => {
   const output = await TestCli.runWithoutTestMode('-v');
   expect(output.trimEnd()).toEqual(packageJson.version);
 });

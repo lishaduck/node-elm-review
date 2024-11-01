@@ -18,14 +18,18 @@ test('Running on project with only suppressed errors remaining should not exit w
   });
 });
 
-test('Running with --unsuppress should report suppressed errors', async () => {
+test('Running with --unsuppress should report suppressed errors', async ({
+  expect
+}) => {
   const output = await TestCli.runAndExpectError('--unsuppress', {
     project: 'project-with-suppressed-errors'
   });
   expect(output).toMatchFileSnapshot(testName('suppressed-errors-unsuppress'));
 });
 
-test('Running with --unsuppress-rules should report suppressed errors for that rule', async () => {
+test('Running with --unsuppress-rules should report suppressed errors for that rule', async ({
+  expect
+}) => {
   const output = await TestCli.runAndExpectError(
     '--unsuppress-rules NoUnused.Dependencies',
     {project: 'project-with-suppressed-errors'}
@@ -35,14 +39,18 @@ test('Running with --unsuppress-rules should report suppressed errors for that r
   );
 });
 
-test('Running with "suppress --check-after-tests" when there are no uncommitted changes should not exit with failure', async () => {
+test('Running with "suppress --check-after-tests" when there are no uncommitted changes should not exit with failure', async ({
+  expect
+}) => {
   const output = await TestCli.run('suppress --check-after-tests', {
     project: 'project-with-suppressed-errors2'
   });
   expect(output).toEqual('');
 });
 
-test('Running with "suppress --check-after-tests" when there are uncommitted changes should exit with failure', async () => {
+test('Running with "suppress --check-after-tests" when there are uncommitted changes should exit with failure', async ({
+  expect
+}) => {
   const folder = path.resolve(
     __dirname,
     './project-with-suppressed-errors/review/suppressed/'
@@ -61,7 +69,9 @@ test('Running with "suppress --check-after-tests" when there are uncommitted cha
   );
 });
 
-test('Running with unsupported version of suppression files should exit with failure', async () => {
+test('Running with unsupported version of suppression files should exit with failure', async ({
+  expect
+}) => {
   // In this setup, running `elm-review` should update a suppression file because
   // an unused variables issue has been fixed. It should however fail because
   // write permission has been removed from `review/suppressed/NoUnused.Variables.json`

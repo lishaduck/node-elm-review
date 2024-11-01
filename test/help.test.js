@@ -10,32 +10,32 @@ function testName(name) {
   return snapshotter.snapshotPath('help', name);
 }
 
-test('--help', async () => {
+test.concurrent('--help', async ({expect}) => {
   const output = await TestCli.run('--help');
   expect(output).toMatchFileSnapshot(testName('default'));
 });
 
-test('init --help', async () => {
+test.concurrent('init --help', async ({expect}) => {
   const output = await TestCli.run('init --help');
   expect(output).toMatchFileSnapshot(testName('init'));
 });
 
-test('suppress --help', async () => {
+test.concurrent('suppress --help', async ({expect}) => {
   const output = await TestCli.run('suppress --help');
   expect(output).toMatchFileSnapshot(testName('suppress'));
 });
 
-test('new-package --help', async () => {
+test.concurrent('new-package --help', async ({expect}) => {
   const output = await TestCli.run('new-package --help');
   expect(output).toMatchFileSnapshot(testName('new-package'));
 });
 
-test('new-rule --help', async () => {
+test.concurrent('new-rule --help', async ({expect}) => {
   const output = await TestCli.run('new-rule --help');
   expect(output).toMatchFileSnapshot(testName('new-rule'));
 });
 
-test('prepare-offline --help', async () => {
+test.concurrent('prepare-offline --help', async ({expect}) => {
   const output = await TestCli.run('prepare-offline --help');
   expect(output).toMatchFileSnapshot(testName('prepare-offline'));
 });

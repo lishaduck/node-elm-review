@@ -8,6 +8,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['html'],
       include: ['lib/*.js']
-    }
+    },
+    testTimeout: 15_000
   }
 });

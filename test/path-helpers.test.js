@@ -1,30 +1,33 @@
 const PathHelpers = require('../lib/path-helpers');
 
-test('should leave the path untouched if it does not contain odd characters', () => {
-  const input = 'some-folder123';
-  const output = PathHelpers.format(input);
-  expect(output).toEqual(input);
-});
+test.concurrent(
+  'should leave the path untouched if it does not contain odd characters',
+  ({expect}) => {
+    const input = 'some-folder123';
+    const output = PathHelpers.format(input);
+    expect(output).toEqual(input);
+  }
+);
 
-test('should escape single quotes', () => {
+test.concurrent('should escape single quotes', ({expect}) => {
   const input = "Don't-do-that";
   const output = PathHelpers.format(input);
   expect(output).toEqual("Don\\'t-do-that");
 });
 
-test('should escape double quotes', () => {
+test.concurrent('should escape double quotes', ({expect}) => {
   const input = 'Don"t-do-that';
   const output = PathHelpers.format(input);
   expect(output).toEqual('Don\\"t-do-that');
 });
 
-test('should escape spaces', () => {
+test.concurrent('should escape spaces', ({expect}) => {
   const input = 'some path';
   const output = PathHelpers.format(input);
   expect(output).toEqual('some\\ path');
 });
 
-test('should escape *', () => {
+test.concurrent('should escape *', ({expect}) => {
   const input = 'some*path';
   const output = PathHelpers.format(input);
   expect(output).toEqual('some\\*path');
