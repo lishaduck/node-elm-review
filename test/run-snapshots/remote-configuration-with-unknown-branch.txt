@@ -1,8 +1,0 @@
-- Fetching template information
-✖ Fetching template information
--- BRANCH OR COMMIT NOT FOUND --------------------------------------------------
-
-I found the jfmengels/elm-review-unused repository on GitHub,
-but I could not find the branch or commit unknown-branch.
-Check the spelling and make sure it has been pushed.
-

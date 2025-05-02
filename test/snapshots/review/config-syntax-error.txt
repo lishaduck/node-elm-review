@@ -1,6 +1,0 @@
--- CONFIGURATION COMPILATION ERROR ---------------------------------------------
-
-Errors occurred while compiling your configuration for elm-review. I need your
-configuration to compile in order to know how to analyze your files. Hopefully
-the compiler error below will help you figure out how to fix it.
-

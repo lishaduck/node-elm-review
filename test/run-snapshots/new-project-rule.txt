@@ -1,3 +1,0 @@
-Adding rule - SomeProjectRule
-Exposing the rule in elm.json
-Adding rule to the README
