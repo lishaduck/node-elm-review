@@ -1,5 +1,5 @@
 {
-  "name": "elm-review",
+  "name": "@elm-review/rewrite",
   "version": "3.0.0-alpha.0",
   "description": "Run elm-review",
   "keywords": [
@@ -25,10 +25,14 @@
   },
   "license": "BSD-3-Clause",
   "author": "Jeroen Engels",
-  "type": "commonjs",
+  "type": "module",
   "bin": {},
   "files": [],
   "scripts": {},
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {},
+  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39",
+  "engines": {
+    "node": "20.19 || >=22"
+  }
 }
