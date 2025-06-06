@@ -1,7 +1,7 @@
 const path = require('node:path');
 const {globSync} = require('tinyglobby');
 
-const root = path.resolve(__dirname, '../../');
+const root = path.resolve(OsHelpers.makePathOsAgnostic(__dirname), '../../');
 
 /**
  * @returns {string[]}

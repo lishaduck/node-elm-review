@@ -29,7 +29,7 @@ function checkThatExampleCompiles(exampleConfiguration) {
     execSync(`npx elm-review --config ${exampleConfiguration} --report=json`, {
       encoding: 'utf8',
       stdio: 'pipe',
-      cwd: path.resolve(__dirname, '..')
+      cwd: path.resolve(OsHelpers.makePathOsAgnostic(__dirname), '..')
     }).toString();
     success(exampleConfiguration);
   } catch (error) {

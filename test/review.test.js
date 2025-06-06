@@ -1,4 +1,5 @@
 const path = require('node:path');
+const OsHelpers = require('../lib/os-helpers');
 const TestCli = require('./jest-helpers/cli');
 const snapshotter = require('./snapshotter');
 
@@ -48,7 +49,7 @@ test('Regular run using --elmjson and --config', async () => {
       '--elmjson=project-with-errors/elm.json',
       '--config=project-with-errors/review'
     ],
-    {cwd: path.resolve(__dirname, '.')}
+    {cwd: path.resolve(OsHelpers.makePathOsAgnostic(__dirname), '.')}
   );
   expect(output).toMatchFile(testName('run-with-elmjson-flag'));
 });

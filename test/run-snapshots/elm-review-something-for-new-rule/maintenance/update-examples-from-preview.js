@@ -2,7 +2,7 @@
 
 const path = require('node:path');
 const fs = require('fs-extra');
-const root = path.resolve(__dirname, '..');
+const root = path.resolve(OsHelpers.makePathOsAgnostic(__dirname), '..');
 const packageElmJson = require(`${root}/elm.json`);
 const {
   findPreviewConfigurations

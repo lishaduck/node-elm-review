@@ -9,11 +9,12 @@
 
 /* eslint n/no-process-exit: "off" -- WIP */
 import * as fsp from 'node:fs/promises';
-import * as path from 'node:path';
+import {posix as path} from 'node:path';
 import * as process from 'node:process';
 import {fileURLToPath} from 'node:url';
 import {glob} from 'tinyglobby';
 import {$, cd} from 'zx';
+import * as OsHelpers from '../lib/os-helpers.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,14 +24,16 @@ $.stdio = 'pipe';
 $.preferLocal = [path.join(__dirname, '../.node_modules/.bin/')];
 
 const BIN = 'elm-review';
-const TMP = path.join(__dirname, 'temporary');
+const TMP = path.join(OsHelpers.makePathOsAgnostic(__dirname), 'temporary');
 const ELM_HOME = path.join(TMP, 'elm-home');
-const SNAPSHOTS = path.join(__dirname, 'run-snapshots');
+const SNAPSHOTS = path.join(
+  OsHelpers.makePathOsAgnostic(__dirname),
+  'run-snapshots'
+);
 /** @type {string | undefined} */
 const SUBCOMMAND = process.argv[2];
 
-const nodeVersionOutput = await $`node --version`;
-const nodeVersion = nodeVersionOutput.stdout.toString().slice(1).trim();
+const nodeVersion = process.versions.node;
 const nvmrc = await fsp.readFile('../.nvmrc');
 const expectedVersion = nvmrc.toString().trim();
 
@@ -42,13 +45,18 @@ if (nodeVersion !== expectedVersion) {
   process.exit(1);
 }
 
+const localPath = path.join(OsHelpers.makePathOsAgnostic(__dirname), '..');
+
 /**
  * @param {string} data
  * @returns {string}
  */
 const replaceScript = (data) => {
-  const localPath = path.join(__dirname, '..');
-  return data.replace(new RegExp(localPath, 'g'), '<local-path>');
+  return data.replace(
+    // eslint-disable-next-line security/detect-non-literal-regexp -- Test code.
+    new RegExp(localPath, 'g'),
+    '<local-path>'
+  );
 };
 
 const {AUTH_GITHUB, CI, REMOTE} = process.env;
@@ -216,11 +224,17 @@ const createAndGoIntoFolder = async (folder) => {
 };
 
 const cleanUp = async () => {
-  const elmStuffs = await glob(path.join(__dirname, '/*/elm-stuff'), {
-    ignore: path.join(__dirname, 'project-with-files-in-elm-stuff/'),
-    onlyDirectories: true,
-    expandDirectories: false
-  });
+  const elmStuffs = await glob(
+    path.join(OsHelpers.makePathOsAgnostic(__dirname), '/*/elm-stuff'),
+    {
+      ignore: path.join(
+        OsHelpers.makePathOsAgnostic(__dirname),
+        'project-with-files-in-elm-stuff/'
+      ),
+      onlyDirectories: true,
+      expandDirectories: false
+    }
+  );
 
   const pathsToRemove = [TMP, ...elmStuffs];
 
@@ -286,9 +300,13 @@ await fsp.rm(projectPath, {recursive: true, force: true});
 
 // @ts-expect-error(TS2339): CI runs on a newer Node.js.
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- ^
-await fsp.cp(path.join(__dirname, 'project-with-errors'), projectPath, {
-  recursive: true
-});
+await fsp.cp(
+  path.join(OsHelpers.makePathOsAgnostic(__dirname), 'project-with-errors'),
+  projectPath,
+  {
+    recursive: true
+  }
+);
 cd(projectPath);
 
 await createTest(
@@ -332,7 +350,12 @@ if (SUBCOMMAND === undefined) {
 
 // Suppress
 
-cd(path.join(__dirname, 'project-with-suppressed-errors'));
+cd(
+  path.join(
+    OsHelpers.makePathOsAgnostic(__dirname),
+    'project-with-suppressed-errors'
+  )
+);
 await createTestSuiteForHumanAndJson(
   'Running with only suppressed errors should not report any errors',
   [],
@@ -432,7 +455,7 @@ await createTest(
 
 await checkFolderContents(NEW_PACKAGE_NAME_FOR_NEW_RULE);
 
-cd(path.join(__dirname, 'project-with-errors'));
+cd(path.join(OsHelpers.makePathOsAgnostic(__dirname), 'project-with-errors'));
 
 await createTest(
   'Filter rules',

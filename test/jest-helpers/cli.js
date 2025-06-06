@@ -3,12 +3,16 @@
  * @import {Options} from './types/cli';
  */
 
-const path = require('node:path');
+const path = require('node:path').posix;
 const {toMatchFile} = require('jest-file-snapshot');
 // @ts-expect-error(TS1479): zx doesn't ship CJS types.
 const {$} = require('zx');
+const OsHelpers = require('../../lib/os-helpers');
 
-const cli = path.resolve(__dirname, '../../bin/elm-review');
+const cli = path.resolve(
+  OsHelpers.makePathOsAgnostic(__dirname),
+  '../../bin/elm-review'
+);
 expect.extend({toMatchFile});
 
 /**
@@ -80,7 +84,11 @@ async function internalExec(args, options = {}) {
  */
 function cwdFromOptions(options) {
   if (options.project) {
-    return path.resolve(__dirname, '..', options.project);
+    return path.resolve(
+      OsHelpers.makePathOsAgnostic(__dirname),
+      '..',
+      options.project
+    );
   }
 
   return options.cwd;

@@ -1,6 +1,7 @@
-const path = require('node:path');
+const path = require('node:path').posix;
 // @ts-expect-error(TS1479): zx doesn't ship CJS types.
 const {$} = require('zx');
+const OsHelpers = require('../lib/os-helpers');
 const TestCli = require('./jest-helpers/cli');
 const snapshotter = require('./snapshotter');
 
@@ -43,10 +44,10 @@ test('Running with "suppress --check-after-tests" when there are no uncommitted 
 
 test('Running with "suppress --check-after-tests" when there are uncommitted changes should exit with failure', async () => {
   const folder = path.resolve(
-    __dirname,
+    OsHelpers.makePathOsAgnostic(__dirname),
     './project-with-suppressed-errors/review/suppressed/'
   );
-  const filePath = folder + '/NoUnused.Variables.json';
+  const filePath = path.join(folder, 'NoUnused.Variables.json');
   await $`rm -r ${filePath}`;
 
   const output = await TestCli.runAndExpectError(
@@ -66,7 +67,6 @@ test('Running with unsupported version of suppression files should exit with fai
   // write permission has been removed from `review/suppressed/NoUnused.Variables.json`
   const project = 'project-with-suppressed-errors-no-write';
   const filePath = path.resolve(
-    __dirname,
     project,
     'review/suppressed/NoUnused.Variables.json'
   );

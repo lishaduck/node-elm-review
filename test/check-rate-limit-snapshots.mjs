@@ -2,14 +2,18 @@
 
 /* eslint n/no-process-exit: "off" -- WIP */
 import * as fsp from 'node:fs/promises';
-import * as path from 'node:path';
+import {posix as path} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {glob} from 'tinyglobby';
+import * as OsHelpers from '../lib/os-helpers.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const SNAPSHOTS = path.join(__dirname, 'run-snapshots');
+const SNAPSHOTS = path.join(
+  OsHelpers.makePathOsAgnostic(__dirname),
+  'run-snapshots'
+);
 
 const snapshotFiles = await glob('**/*.txt', {
   caseSensitiveMatch: true,
